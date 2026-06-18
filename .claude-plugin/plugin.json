@@ -1,6 +1,6 @@
 {
   "name": "okf-memory",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "description": "Portable cross-session memory for any repo. An Open Knowledge Format (OKF) bundle of markdown concept files lives in-repo at .knowledge/, so a fresh session knows the codebase vocabulary and architecture without re-reading source.",
   "author": {
     "name": "Anurag Upadhyay"

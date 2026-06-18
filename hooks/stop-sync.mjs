@@ -8,7 +8,7 @@
 // When it fires it clears the marker (deterministic, loop-safe) and blocks the
 // stop with a reason instructing the model to run /okf-sync, then finish.
 
-import { readFileSync, existsSync, rmSync } from "node:fs";
+import { readFileSync, existsSync, rmSync, statSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 
 function readStdin() {
@@ -39,6 +39,20 @@ if (!existsSync(join(knowledgeDir, "index.md"))) process.exit(0);
 const dirtyPath = join(knowledgeDir, ".okf-dirty");
 if (!existsSync(dirtyPath)) process.exit(0);
 
+// throttle: auto-sync at most once per 10 min so rapid edit/stop loops don't
+// each trigger a sync. On a throttled skip, LEAVE .okf-dirty intact so the
+// changed-file list keeps accumulating and syncs on the next eligible turn.
+const THROTTLE_MS = 10 * 60 * 1000;
+const syncStampPath = join(knowledgeDir, ".okf-last-sync");
+try {
+  if (existsSync(syncStampPath)) {
+    const age = Date.now() - statSync(syncStampPath).mtimeMs;
+    if (age < THROTTLE_MS) process.exit(0);
+  }
+} catch {
+  // if we can't read the stamp, fall through and sync
+}
+
 // read the changed-file list so the sync can target only affected concepts
 let changed = [];
 try {
@@ -50,7 +64,13 @@ try {
   changed = [];
 }
 
-// clear the marker now so this fires at most once per dirty batch and can't loop
+// we're firing: stamp the sync time (starts the throttle window) and clear the
+// marker so this fires at most once per dirty batch and can't loop.
+try {
+  writeFileSync(syncStampPath, String(Date.now()));
+} catch {
+  // best-effort; stop_hook_active still prevents a loop
+}
 try {
   rmSync(dirtyPath);
 } catch {

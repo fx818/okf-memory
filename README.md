@@ -27,7 +27,7 @@ State (overwritten) is kept strictly apart from history (appended). That separat
 | `/okf-check` | Audit for staleness, contradictions, coverage gaps. |
 | SessionStart hook | Injects `.knowledge/index.md` if present, else hints to run `/okf-init`. |
 | PostToolUse hook | Non-blocking, throttled nudge after source edits; records each changed file path in `.okf-dirty`. |
-| Stop hook | If source changed this session, auto-runs a surgical `/okf-sync` (only the changed files' concepts) before the turn ends. |
+| Stop hook | If source changed this session, auto-runs a surgical `/okf-sync` (only the changed files' concepts) before the turn ends. Throttled to once per 10 min; changes accumulate between syncs. |
 
 ## Install
 
@@ -42,7 +42,7 @@ Then in any repo:
 /okf-init        # build the bundle (writes immediately, no approval prompt)
 ```
 
-Commit `.knowledge/` so the memory travels with the repo. Add `.knowledge/.okf-last-nudge` and `.knowledge/.okf-dirty` to `.gitignore` (internal hook stamps).
+Commit `.knowledge/` so the memory travels with the repo. Add `.knowledge/.okf-last-nudge`, `.knowledge/.okf-dirty`, and `.knowledge/.okf-last-sync` to `.gitignore` (internal hook stamps).
 
 ## Format
 
