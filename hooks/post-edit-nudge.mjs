@@ -38,6 +38,14 @@ if (!filePath) process.exit(0);
 const rel = isAbsolute(filePath) ? relative(projectDir, filePath) : filePath;
 if (rel.startsWith(".knowledge")) process.exit(0);
 
+// mark the bundle dirty so the Stop hook knows source changed this session.
+// not throttled - every real source edit flips this on; the Stop hook clears it.
+try {
+  writeFileSync(join(knowledgeDir, ".okf-dirty"), String(Date.now()));
+} catch {
+  // best-effort; never crash the tool call
+}
+
 // throttle: once per 10 minutes per repo
 const THROTTLE_MS = 10 * 60 * 1000;
 const stampPath = join(knowledgeDir, ".okf-last-nudge");
