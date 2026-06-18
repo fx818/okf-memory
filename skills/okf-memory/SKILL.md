@@ -54,7 +54,7 @@ A fact lives in exactly one concept file. If two files would state it, link inst
 
 ## Commands
 
-- `/okf-init` - create the bundle for a repo that has none (shallow 3-layer structure scan, infer subsystems, confirm, then write).
+- `/okf-init` - create the bundle for a repo that has none (shallow 3-layer structure scan, infer subsystems, then write - no approval prompt).
 - `/okf-sync` - fold recent changes into concepts and restamp (use after a batch of work, or when the post-edit nudge fires).
 - `/okf-check` - audit the bundle for staleness, contradictions, and coverage gaps.
 
