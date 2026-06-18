@@ -1,0 +1,13 @@
+{
+  "name": "okf-memory-marketplace",
+  "owner": {
+    "name": "Anurag Upadhyay"
+  },
+  "plugins": [
+    {
+      "name": "okf-memory",
+      "source": "./",
+      "description": "Portable cross-session memory: an in-repo .knowledge/ OKF bundle so fresh sessions start knowing the codebase without re-reading source."
+    }
+  ]
+}
