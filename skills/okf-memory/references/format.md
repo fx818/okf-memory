@@ -48,6 +48,18 @@ Field set is fixed - do not invent fields:
 - **Compact.** If detail belongs in source code, link to it rather than copying it - copied detail drifts.
 - **One fact, one file.** Link across concepts instead of duplicating.
 
+## Size budgets (keep the bundle cheap to load)
+
+The whole point is low token cost. Stay inside these budgets; over budget means tighten or split, never let it grow unbounded:
+
+| File | Budget | If over |
+|---|---|---|
+| `index.md` concept line | one line, ≤ 15 words | shorten the description; detail lives in the concept |
+| concept body | ≤ ~150 words (~30 lines) | tighten to current truth, or split into a second concept by sub-area |
+| `index.md` total | ≤ ~40 concept lines | the repo likely has too many micro-concepts; merge related ones |
+
+When overwriting a concept, rewrite the whole body to current truth - do not accrete. If a body keeps pushing the budget, that's the signal it covers two subsystems and should split.
+
 ## index.md
 
 The map. The only file auto-loaded at session start. For each concept: name (linked), one-line description, freshness. Plus an open-threads / next-steps section so a resuming session knows where work stopped.

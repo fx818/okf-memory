@@ -39,6 +39,17 @@ if (!existsSync(join(knowledgeDir, "index.md"))) process.exit(0);
 const dirtyPath = join(knowledgeDir, ".okf-dirty");
 if (!existsSync(dirtyPath)) process.exit(0);
 
+// read the changed-file list so the sync can target only affected concepts
+let changed = [];
+try {
+  changed = readFileSync(dirtyPath, "utf8")
+    .split("\n")
+    .map((l) => l.trim())
+    .filter(Boolean);
+} catch {
+  changed = [];
+}
+
 // clear the marker now so this fires at most once per dirty batch and can't loop
 try {
   rmSync(dirtyPath);
@@ -46,14 +57,19 @@ try {
   // if we can't clear it, still proceed - stop_hook_active prevents a loop
 }
 
+if (!changed.length) process.exit(0);
+
+const fileList = changed.join(", ");
 process.stdout.write(
   JSON.stringify({
     decision: "block",
     reason:
-      "Source files changed this session and the .knowledge bundle may be stale. " +
-      "Run /okf-sync now: fold the behavioral changes into the matching concept files " +
-      "(overwrite their bodies + restamp timestamps), refresh their lines in index.md, " +
-      "and append a dated line to .knowledge/log.md. Skip concepts unaffected by trivial " +
-      "edits. Then finish.",
+      "These files changed this session: " +
+      fileList +
+      ". Run a SURGICAL /okf-sync now - only for the concepts those files map to: " +
+      "overwrite their bodies with current truth + restamp timestamps, refresh their " +
+      "lines in index.md, and append a dated line to .knowledge/log.md. Do NOT re-scan " +
+      "or re-verify the rest of the bundle. Skip entirely if these were trivial edits " +
+      "(typos, formatting, pure refactors with no behavior change). Then finish.",
   })
 );

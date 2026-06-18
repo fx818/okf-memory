@@ -13,3 +13,5 @@ behaves today. No dated event narration - that goes in log.md.>
 
 <Point to source for the how: `path/to/file.ts` does X. Link related concepts:
 [glossary](glossary.md), [other area](arch-other.md).>
+
+<!-- Keep this body under ~150 words. Over budget -> tighten, or split by sub-area. -->

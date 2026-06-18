@@ -38,10 +38,22 @@ if (!filePath) process.exit(0);
 const rel = isAbsolute(filePath) ? relative(projectDir, filePath) : filePath;
 if (rel.startsWith(".knowledge")) process.exit(0);
 
-// mark the bundle dirty so the Stop hook knows source changed this session.
-// not throttled - every real source edit flips this on; the Stop hook clears it.
+// record the changed file in .okf-dirty so the Stop hook can run a SURGICAL
+// sync (only the concepts mapping to these files) instead of re-scanning the
+// bundle. Deduped newline list; not throttled - the Stop hook clears it.
 try {
-  writeFileSync(join(knowledgeDir, ".okf-dirty"), String(Date.now()));
+  const dirtyPath = join(knowledgeDir, ".okf-dirty");
+  let existing = "";
+  try {
+    existing = readFileSync(dirtyPath, "utf8");
+  } catch {
+    existing = "";
+  }
+  const files = new Set(
+    existing.split("\n").map((l) => l.trim()).filter(Boolean)
+  );
+  files.add(rel.split("\\").join("/"));
+  writeFileSync(dirtyPath, Array.from(files).join("\n") + "\n");
 } catch {
   // best-effort; never crash the tool call
 }

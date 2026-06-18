@@ -11,12 +11,12 @@ Load the `okf-memory` skill and read its `references/maintenance.md` first.
 1. **Confirm the bundle exists.** If there's no `.knowledge/index.md`, tell the user to run `/okf-init`.
 
 2. **Find what changed.** Compare recent work against the bundle:
-   - `git log` / `git diff` since around the oldest concept `timestamp`.
-   - Whatever was edited this session.
+   - If a changed-file list was handed to you (the Stop hook names the files, or `.knowledge/.okf-dirty` lists them), target ONLY those files - this is the cheap path; do not re-scan the bundle.
+   - Otherwise: `git log` / `git diff` since around the oldest concept `timestamp`, plus whatever was edited this session.
    Map changed paths to subsystems (which `arch-*.md` each touches).
 
 3. **For each affected concept, run the after-a-change loop** (from `maintenance.md`):
-   - Overwrite the body with the new current truth (present tense; delete what's no longer true).
+   - Overwrite the body with the new current truth (present tense; delete what's no longer true). Keep it within the size budget in `references/format.md` (~150 words) - rewrite, don't accrete.
    - Restamp `timestamp` to now.
    - Update its one-line description in `index.md` if it changed.
    - Append one dated line to `log.md`.

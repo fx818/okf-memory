@@ -1,6 +1,6 @@
 ---
 name: okf-memory
-description: Use at the start of any session in a repo with a .knowledge/ bundle, and whenever you make changes that alter how the codebase works. Cross-session memory in Open Knowledge Format - read the index first, drill into concept files on demand, overwrite + restamp concepts after changes. Keeps a fresh session from re-reading source to relearn vocabulary and architecture.
+description: Use when you change code in a way that alters how it works (update + restamp the affected concept), when drilling into a .knowledge/ concept file, or when running /okf-init, /okf-sync, /okf-check. The SessionStart hook already injects index.md for read-only use, so do NOT load this skill just to read the index. Cross-session memory in Open Knowledge Format - keeps sessions from re-reading source to relearn vocabulary and architecture.
 ---
 
 # OKF Memory

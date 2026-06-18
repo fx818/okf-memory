@@ -21,13 +21,13 @@ State (overwritten) is kept strictly apart from history (appended). That separat
 
 | Piece | Role |
 |---|---|
-| `skills/okf-memory` | Always-on discipline: read index first, drill on demand, overwrite + restamp after changes, re-verify stale. |
+| `skills/okf-memory` | Loads on mutation (not every session): drill into a concept, overwrite + restamp after changes, re-verify stale. Read-only sessions use the SessionStart hook alone. |
 | `/okf-init` | Create the bundle for a repo that has none. Shallow 3-layer structure scan only - never reads the whole codebase. |
 | `/okf-sync` | Fold recent changes into concepts and restamp. |
 | `/okf-check` | Audit for staleness, contradictions, coverage gaps. |
 | SessionStart hook | Injects `.knowledge/index.md` if present, else hints to run `/okf-init`. |
-| PostToolUse hook | Non-blocking, throttled nudge to update concepts after source edits; flags the bundle dirty. |
-| Stop hook | If source changed this session, auto-runs `/okf-sync` before the turn ends (fires once per dirty batch). |
+| PostToolUse hook | Non-blocking, throttled nudge after source edits; records each changed file path in `.okf-dirty`. |
+| Stop hook | If source changed this session, auto-runs a surgical `/okf-sync` (only the changed files' concepts) before the turn ends. |
 
 ## Install
 
