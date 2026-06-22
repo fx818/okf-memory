@@ -19,7 +19,7 @@ Load the `okf-memory` skill and read its `references/maintenance.md` first.
    - Overwrite the body with the new current truth (present tense; delete what's no longer true). Keep it within the size budget in `references/format.md` (~150 words) - rewrite, don't accrete.
    - Restamp `timestamp` to now.
    - Update its one-line description in `index.md` if it changed.
-   - Append one dated line to `log.md`.
+   - Add an entry to `log.md` under today's `## YYYY-MM-DD` heading (newest-first; create the heading if absent).
    Create a new concept file if a real subsystem now has none.
 
 4. **Reconcile `index.md`** - every concept line current, open-threads section updated.

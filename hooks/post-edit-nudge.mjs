@@ -78,7 +78,7 @@ process.stdout.write(
       additionalContext:
         "Reminder: if this and recent edits changed how the codebase behaves, " +
         "update the matching .knowledge concept (overwrite its body + restamp timestamp), " +
-        "refresh its line in index.md, and append a dated line to .knowledge/log.md. " +
+        "refresh its line in index.md, and add a dated entry to .knowledge/log.md (under today's ## YYYY-MM-DD heading, newest-first). " +
         "Run /okf-sync to do this for a batch of changes. Skip if these were trivial edits.",
     },
   })

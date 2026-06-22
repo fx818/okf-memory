@@ -10,7 +10,7 @@ Trigger: you changed behavior, vocabulary, or architecture - the kind of thing a
 2. **Overwrite the body** with the new current truth. Present tense. Delete anything no longer true - don't leave the old statement next to the new one.
 3. **Restamp** `timestamp` to now (ISO 8601 UTC).
 4. **Update `index.md`** if the one-line description changed.
-5. **Append to `log.md`**: one dated line - what changed, which concept updated.
+5. **Add to `log.md`**: an entry under today's `## YYYY-MM-DD` heading (newest-first) - what changed, which concept updated.
 
 That's the whole loop. It's the same moment you'd commit or jot a note, so it's not a new habit.
 

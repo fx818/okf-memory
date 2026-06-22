@@ -29,6 +29,11 @@ try {
 // already continuing from a previous Stop-hook block -> let it stop (no loop)
 if (input.stop_hook_active) process.exit(0);
 
+// opt-out: OKF_AUTO_SYNC=0|false|off disables the forced stop-time sync. The
+// PostToolUse nudge and .okf-dirty tracking still run, so /okf-sync stays manual.
+const optOut = String(process.env.OKF_AUTO_SYNC || "").trim().toLowerCase();
+if (["0", "false", "off", "no"].includes(optOut)) process.exit(0);
+
 const projectDir = input.cwd || process.env.CLAUDE_PROJECT_DIR || process.cwd();
 const knowledgeDir = join(projectDir, ".knowledge");
 
@@ -88,7 +93,7 @@ process.stdout.write(
       fileList +
       ". Run a SURGICAL /okf-sync now - only for the concepts those files map to: " +
       "overwrite their bodies with current truth + restamp timestamps, refresh their " +
-      "lines in index.md, and append a dated line to .knowledge/log.md. Do NOT re-scan " +
+      "lines in index.md, and add a dated entry to .knowledge/log.md (under today's ## YYYY-MM-DD heading, newest-first). Do NOT re-scan " +
       "or re-verify the rest of the bundle. Skip entirely if these were trivial edits " +
       "(typos, formatting, pure refactors with no behavior change). Then finish.",
   })

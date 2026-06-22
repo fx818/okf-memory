@@ -24,10 +24,11 @@ State (overwritten) is kept strictly apart from history (appended). That separat
 | `skills/okf-memory` | Loads on mutation (not every session): drill into a concept, overwrite + restamp after changes, re-verify stale. Read-only sessions use the SessionStart hook alone. |
 | `/okf-init` | Create the bundle for a repo that has none. Shallow 3-layer structure scan only - never reads the whole codebase. |
 | `/okf-sync` | Fold recent changes into concepts and restamp. |
-| `/okf-check` | Audit for staleness, contradictions, coverage gaps. |
+| `/okf-check` | Audit for staleness, contradictions, coverage gaps. Runs a deterministic lint (`scripts/okf.mjs`) for format + size checks before the model-driven part. |
+| `/okf-status` | Cheap, token-free snapshot: concept count, stalest timestamp, files pending sync, budget warnings. |
 | SessionStart hook | Injects `.knowledge/index.md` if present, else hints to run `/okf-init`. |
 | PostToolUse hook | Non-blocking, throttled nudge after source edits; records each changed file path in `.okf-dirty`. |
-| Stop hook | If source changed this session, auto-runs a surgical `/okf-sync` (only the changed files' concepts) before the turn ends. Throttled to once per 10 min; changes accumulate between syncs. |
+| Stop hook | If source changed this session, auto-runs a surgical `/okf-sync` (only the changed files' concepts) before the turn ends. Throttled to once per 10 min; changes accumulate between syncs. Set `OKF_AUTO_SYNC=0` to disable and keep syncing manual. |
 
 ## Install
 
@@ -42,7 +43,7 @@ Then in any repo:
 /okf-init        # build the bundle (writes immediately, no approval prompt)
 ```
 
-Commit `.knowledge/` so the memory travels with the repo. Add `.knowledge/.okf-last-nudge`, `.knowledge/.okf-dirty`, and `.knowledge/.okf-last-sync` to `.gitignore` (internal hook stamps).
+Commit `.knowledge/` so the memory travels with the repo. `/okf-init` writes a `.knowledge/.gitignore` that excludes the internal hook stamps (`.okf-dirty`, `.okf-last-nudge`, `.okf-last-sync`), so nothing extra to set up.
 
 ## Format
 

@@ -20,7 +20,13 @@ First load the `okf-memory` skill (and read its `references/format.md`) so you f
    - `.knowledge/index.md` (from `templates/index.md`) - one line per concept + open-threads section.
    - `.knowledge/glossary.md` (from `templates/glossary.md`).
    - `.knowledge/arch-<area>.md` per subsystem (from `templates/concept.md`).
-   - `.knowledge/log.md` - start with a single line noting the bundle was initialized today.
+   - `.knowledge/log.md` (from `templates/log.md`) - a `## YYYY-MM-DD` heading for today with a `**Creation**` entry noting the bundle was initialized.
+   - `.knowledge/.gitignore` - so the internal hook stamps never get committed. Write exactly:
+     ```
+     .okf-dirty
+     .okf-last-nudge
+     .okf-last-sync
+     ```
    - Stamp every `timestamp` with today's date (UTC). Verify each claim against structure/signal files before writing it as truth - don't assert behavior you haven't grounded.
 
 6. **Tell the user** what was created and that future sessions will auto-load `index.md`. Suggest committing `.knowledge/` so the memory travels with the repo.

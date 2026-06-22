@@ -22,15 +22,18 @@ or [matching](arch-matching.md) style links. Point to source for detail that
 belongs in source - the concept says what and why, the code says how.
 ```
 
-Field set is fixed - do not invent fields:
+This is the **profile** we author in. OKF v0.1 itself requires only a non-empty `type`; everything else is optional. We keep all five for consistency and cheap indexing:
 
-| Field | Meaning |
-|---|---|
-| `type` | one of the six values above |
-| `title` | human name of the concept |
-| `description` | one line; this is what shows in `index.md` |
-| `tags` | lowercase keywords for grep/search |
-| `timestamp` | ISO 8601 UTC; when this concept was last verified true |
+| Field | Required? | Meaning |
+|---|---|---|
+| `type` | **yes** (OKF hard requirement) | one of the six values above |
+| `title` | profile | human name of the concept |
+| `description` | profile | one line; this is what shows in `index.md` |
+| `tags` | profile | lowercase keywords for grep/search |
+| `timestamp` | profile | ISO 8601 UTC; when this concept was last verified true |
+| `resource` | optional | canonical URI for an underlying asset, when the concept describes one (OKF-standard optional field) |
+
+Stick to this set when authoring. For **interop** - consuming a bundle written elsewhere - OKF permits producer-defined types and extra key/value fields, so don't reject a foreign concept just because its `type` is `Table` or it carries unknown keys; `/okf-check` flags these, it doesn't error on them.
 
 ### `type` values
 
@@ -80,13 +83,26 @@ The map. The only file auto-loaded at session start. For each concept: name (lin
 
 ## log.md
 
-Append-only history. The OKF `log`. Not auto-loaded - consulted on demand when someone asks "when/why did this change". One line per entry, newest at the bottom (or top - be consistent):
+Append-only history. The OKF `log`. Not auto-loaded - consulted on demand when someone asks "when/why did this change".
+
+Follows OKF §7: a flat list of **date-grouped entries, newest first**. Each date is an ISO 8601 `## YYYY-MM-DD` heading; under it, one bullet per change. Entries are prose - the leading bold word (`**Update**`, `**Creation**`, `**Deprecation**`, `**Rename**`, …) is a convention, not a requirement. Name the concept that changed.
 
 ```markdown
 # Change Log
-- 2026-06-18 - renamed Chats to Peers in UI; concept arch-peers.md updated
-- 2026-06-18 - migration 023 de-junctioned dismissed_notifications; arch-notifications.md updated
+
+## 2026-06-18
+* **Rename**: renamed Chats to Peers in UI; [arch-peers](arch-peers.md) updated.
+* **Update**: migration 023 de-junctioned dismissed_notifications; [arch-notifications](arch-notifications.md) updated.
+
+## 2026-06-17
+* **Creation**: initialized the knowledge bundle.
 ```
+
+New entries go under today's `## YYYY-MM-DD` heading at the **top** of the list (create the heading if today's isn't there yet). Never rewrite past entries - the log is history.
+
+## Citations & external references
+
+A concept may cite an external source with a normal markdown link - an absolute URL, or a bundle-relative path. For a source worth mirroring (an RFC, an API contract, a design doc), OKF's convention is a `references/` subdirectory whose files are themselves concepts (`type: reference`), so the external material becomes first-class and greppable instead of a bare URL that rots. Use this only when a link genuinely needs to travel with the repo; a plain URL is fine otherwise.
 
 ## Deliberately NOT in scope (YAGNI)
 

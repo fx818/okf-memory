@@ -42,7 +42,7 @@ When you change behavior, vocabulary, or architecture (not for typo fixes or pur
 1. **Overwrite** the affected concept file's body with the new current truth - present tense, no event narration.
 2. **Restamp** that concept's `timestamp` to now.
 3. If its one-line description changed, update that line in `index.md`.
-4. **Append** one dated line to `log.md` recording what changed.
+4. **Add** an entry to `log.md` under today's `## YYYY-MM-DD` heading (newest-first) recording what changed.
 
 This rides the same moment you'd already use to commit or note a change - it is not a separate habit to remember. Full procedure in [references/maintenance.md](references/maintenance.md).
 
